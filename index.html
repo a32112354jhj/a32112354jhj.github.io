@@ -176,6 +176,23 @@
         </div>
     </div>
 
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/_6TtTRrno3E?si=dMK8D3B4MHQflZOt"
+        title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+    <button onclick="goToTop()">Go Top</button>
 </body>
 
 </html>
+
+<script>
+    // JS邏輯
+    function goToTop() {
+        // 滾動到頁面頂部的動畫效果，使用 `window.scrollTo()` 方法
+        // 可以調整 `behavior` 參數來控制動畫效果，例如 "smooth" 會有平滑滾動效果
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+</script>
