@@ -1,198 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的個人作品集網站_1119</title>
-    <link rel="stylesheet" href="./css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全端工程師技能樹</title>
+<style>
+  :root{
+    --bg:#0d1117; --bg-soft:#161b22; --line:#30363d; --conn:#3a4452;
+    --text:#e6edf3; --text-dim:#8b949e; --card:#1c2128;
+    --fe:#58a6ff; --be:#3fb950; --ai:#bc8cff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:-apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;
+    background:radial-gradient(circle at 50% -10%,#1b2430 0%,var(--bg) 55%);
+    color:var(--text);min-height:100vh;padding:32px 0 80px;
+  }
+  header{text-align:center;margin-bottom:8px;padding:0 20px;}
+  header h1{font-size:30px;letter-spacing:1px;}
+  header p{color:var(--text-dim);margin-top:8px;font-size:14px;}
+
+  .legend{display:flex;gap:18px;justify-content:center;margin:22px 0 10px;flex-wrap:wrap;font-size:13px;color:var(--text-dim);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .hint{text-align:center;color:var(--text-dim);font-size:12px;margin-bottom:18px;}
+
+  /* ===== 橫排族譜樹 ===== */
+  .treewrap{overflow-x:auto;padding:24px 30px 50px;}
+  .tree{display:inline-block;min-width:100%;text-align:center;}
+  .tree ul{position:relative;padding-top:28px;display:flex;justify-content:center;}
+  .tree li{list-style:none;position:relative;padding:28px 12px 0;display:flex;flex-direction:column;align-items:center;}
+  /* 連接線 */
+  .tree li::before,.tree li::after{content:"";position:absolute;top:0;width:50%;height:28px;border-top:2px solid var(--conn);}
+  .tree li::before{right:50%;}
+  .tree li::after{left:50%;border-left:2px solid var(--conn);}
+  .tree li:only-child::before,.tree li:only-child::after{display:none;}
+  .tree li:only-child{padding-top:28px;}
+  .tree li:first-child::before,.tree li:last-child::after{border:0 none;}
+  .tree li:last-child::before{border-right:2px solid var(--conn);border-radius:0 6px 0 0;}
+  .tree li:first-child::after{border-radius:6px 0 0 0;}
+  .tree ul ul::before{content:"";position:absolute;top:0;left:50%;border-left:2px solid var(--conn);width:0;height:28px;}
+
+  /* 單行節點（根 / 領域） */
+  .pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 16px;font-size:14px;color:var(--text);white-space:nowrap;}
+  .root{font-size:17px;font-weight:700;padding:13px 22px;background:var(--bg-soft);border-color:#444c56;box-shadow:0 0 24px rgba(88,166,255,.12);}
+  .domain{font-weight:700;font-size:15px;letter-spacing:1px;}
+  .domain.fe{color:var(--fe);border-color:rgba(88,166,255,.5);}
+  .domain.be{color:var(--be);border-color:rgba(63,185,80,.5);}
+  .domain.ai{color:var(--ai);border-color:rgba(188,140,255,.5);}
+
+  /* 技能卡（上半=技能；下半=細項技術） */
+  .card{display:inline-flex;flex-direction:column;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:124px;max-width:178px;position:relative;transition:.16s;}
+  .card:hover{box-shadow:0 8px 20px rgba(0,0,0,.45);transform:translateY(-2px);}
+  .card .lvdot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;}
+  .lv-1 .lvdot{background:#7ee787;} .lv-2 .lvdot{background:#d29922;} .lv-3 .lvdot{background:#f85149;}
+  .card-head{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text);padding-right:10px;}
+  .card-head .nm{font-size:13px;font-weight:600;text-align:left;line-height:1.3;}
+  .card-head .arrow{margin-left:auto;color:var(--text-dim);font-size:12px;}
+  .fe .card:hover{border-color:var(--fe);} .be .card:hover{border-color:var(--be);} .ai .card:hover{border-color:var(--ai);}
+
+  .variants{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;border-top:1px dashed var(--line);padding-top:7px;}
+  .chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--text-dim);text-decoration:none;background:#0d1117;border:1px solid var(--line);border-radius:20px;padding:3px 8px;transition:.16s;}
+  .chip:hover{color:var(--text);border-color:var(--text-dim);}
+
+  .ic{border-radius:6px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:#0d1117;border:1px solid var(--line);overflow:hidden;}
+  .ic-emoji{border-style:dashed;color:var(--text-dim);}
+</style>
 </head>
-
 <body>
-    <!-- 放在這 -->
-    <div class="div">
-        <div class="div-2">
-            <div class="div-3">
+<header>
+  <h1>🌳 全端工程師技能樹</h1>
+  <p>基礎技能在上，往下延伸進階技能（如 CSS → CSS 工具、JS → TS → 框架）</p>
+</header>
 
-                <img loading="lazy"
-                    srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/6ce008a8-4dee-4ede-a04f-9fb6f7fdfd94?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/6ce008a8-4dee-4ede-a04f-9fb6f7fdfd94?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/6ce008a8-4dee-4ede-a04f-9fb6f7fdfd94?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/6ce008a8-4dee-4ede-a04f-9fb6f7fdfd94?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/6ce008a8-4dee-4ede-a04f-9fb6f7fdfd94?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/6ce008a8-4dee-4ede-a04f-9fb6f7fdfd94?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/6ce008a8-4dee-4ede-a04f-9fb6f7fdfd94?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/6ce008a8-4dee-4ede-a04f-9fb6f7fdfd94?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&"
-                    class="img" />
-                <div class="div-4">
-                    <div class="div-5">
-                        <img loading="lazy"
-                            srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/beadcdc1-100a-4ada-9d66-1124409b4793?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/beadcdc1-100a-4ada-9d66-1124409b4793?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/beadcdc1-100a-4ada-9d66-1124409b4793?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/beadcdc1-100a-4ada-9d66-1124409b4793?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/beadcdc1-100a-4ada-9d66-1124409b4793?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/beadcdc1-100a-4ada-9d66-1124409b4793?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/beadcdc1-100a-4ada-9d66-1124409b4793?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/beadcdc1-100a-4ada-9d66-1124409b4793?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&"
-                            class="img" />
-                        <div class="div-6"></div>
-                        <div class="div-7">
-                            <div class="div-8">個人作品集網站</div>
-                            <div class="div-9">
-                                歡迎來到我的作品集網站！我是XXX（姓名）,
-                                一位具有多年經驗的專業人士。我的網站展示了我過去的作品和經驗，期望能夠跟您分享我的專業技能，讓我能為您提供幫助！
-                            </div>
-                            <!-- <div class="div-10">與我聯絡</div> -->
-                            <a href="#" class="div-10 btn">與我聯絡</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="div-11">
-                    <div class="div-12">
-                        <div class="column">
-                            <div class="div-13">
-                                <div class="div-14">個人簡歷</div>
-                                <div class="div-15">專業經歷</div>
-                                <div class="div-16">公司A，Web設計師 (5年)</div>
-                                <div class="div-17">公司B，平面設計師 (3年)</div>
-                                <div class="div-18">自由接案設計師 (2年)</div>
-                            </div>
-                        </div>
-                        <div class="column-2">
-                            <div class="div-19">
-                                <div class="div-20">教育背景</div>
-                                <div class="div-21">大學A，設計學系學士學位</div>
-                                <div class="div-22">大學B，資訊科技系碩士學位</div>
-                            </div>
-                        </div>
-                        <div class="column-3">
-                            <div class="div-23">
-                                <div class="div-24">技能及證書</div>
-                                <div class="div-25">Adobe 設計軟體</div>
-                                <div class="div-26">網頁開發</div>
-                                <div class="div-27">UI/UX 設計</div>
-                                <div class="div-28">Google Analytics 證書</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="div-29">
-                    <div class="div-30">
-                        <div class="column-4">
-                            <div class="div-31">
-                                <div class="div-32">作品集</div>
-                                <div class="div-33">
-                                    <div class="div-34">
-                                        <div class="column-5">
-                                            <div class="div-35">
-                                                <!-- <img loading="lazy"
-                                                    srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/74b05419-94ef-4fcf-b82a-5c16db3e663f?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/74b05419-94ef-4fcf-b82a-5c16db3e663f?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/74b05419-94ef-4fcf-b82a-5c16db3e663f?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/74b05419-94ef-4fcf-b82a-5c16db3e663f?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/74b05419-94ef-4fcf-b82a-5c16db3e663f?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/74b05419-94ef-4fcf-b82a-5c16db3e663f?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/74b05419-94ef-4fcf-b82a-5c16db3e663f?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/74b05419-94ef-4fcf-b82a-5c16db3e663f?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&"
-                                                    class="img-2" /> -->
-                                                <img src="./images/div.card-layout-cell-bg.png" alt="" class="img-2">
-                                                <div class="div-36">響應式網頁設計</div>
-                                            </div>
-                                        </div>
-                                        <div class="column-6">
-                                            <div class="div-37">
-                                                <img loading="lazy"
-                                                    srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/018b3686-15f5-4f5e-a8f5-2bd6636db342?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/018b3686-15f5-4f5e-a8f5-2bd6636db342?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/018b3686-15f5-4f5e-a8f5-2bd6636db342?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/018b3686-15f5-4f5e-a8f5-2bd6636db342?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/018b3686-15f5-4f5e-a8f5-2bd6636db342?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/018b3686-15f5-4f5e-a8f5-2bd6636db342?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/018b3686-15f5-4f5e-a8f5-2bd6636db342?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/018b3686-15f5-4f5e-a8f5-2bd6636db342?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&"
-                                                    class="img-3" />
-                                                <div class="div-38">品牌形象設計</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="div-39">
-                                    <div class="div-40">
-                                        這個網頁的目標是提高用戶體驗，不論用戶使用的瀏覽器或設備，都可以輕鬆地查看網頁。此外，我還為用戶提供了先進的搜索功能，幫助他們快速查找所需內容。
-                                    </div>
-                                    <div class="div-41">
-                                        這是我為公司設計的品牌形象。我運用了現代風格，強調了公司的專業性和可信性。洗鍊的字體、和諧的色彩、和簡明的logo設計，使整個品牌形象值得信任。
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column-7">
-                            <div class="div-42">
-                                <img loading="lazy"
-                                    srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/570139bd-c318-408a-8d0d-1ed7d9c89aad?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/570139bd-c318-408a-8d0d-1ed7d9c89aad?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/570139bd-c318-408a-8d0d-1ed7d9c89aad?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/570139bd-c318-408a-8d0d-1ed7d9c89aad?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/570139bd-c318-408a-8d0d-1ed7d9c89aad?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/570139bd-c318-408a-8d0d-1ed7d9c89aad?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/570139bd-c318-408a-8d0d-1ed7d9c89aad?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/570139bd-c318-408a-8d0d-1ed7d9c89aad?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&"
-                                    class="img-4" />
-                                <div class="div-43">動態設計</div>
-                                <div class="div-44">
-                                    我利用網頁的高級技術，為公司創建了一個精美的動畫。我使用了自然的動畫、繽紛的顏色和有創意的編排，使人們對公司留下了深刻萬歲，並吸引他們進一步探索網站功能。
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="div-45">
-                    <div class="div-46">
-                        <div class="div-47">
-                            <div class="column-8">
-                                <div class="div-48">
-                                    <div class="div-49">部落格/文章</div>
-                                    <div class="div-50">
-                                        <div class="div-51">設計思考</div>
-                                        <div class="div-52">
-                                            通過設計思考，我可以更好地了解用戶的問題、需求和痛點。在這篇文章中，我會和您分享我在開展項目前如何為用戶創建一個完整的項目框架。
-                                        </div>
-                                    </div>
-                                    <div class="div-53">
-                                        <div class="div-54">顏色運用於設計中的重要性</div>
-                                        <div class="div-55">
-                                            選擇顏色是設計過程中重要的一環。在這篇文章中，我會分享一個設計項目的案例，具體談談顏色如何用於設計中，以及如何選擇最佳的顏色組合。
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<div class="legend">
+  <span><i class="dot" style="background:var(--fe)"></i>前端</span>
+  <span><i class="dot" style="background:var(--be)"></i>後端</span>
+  <span><i class="dot" style="background:var(--ai)"></i>AI 輔助開發</span>
+  <span><i class="dot" style="background:#7ee787"></i>入門</span>
+  <span><i class="dot" style="background:#d29922"></i>中階</span>
+  <span><i class="dot" style="background:#f85149"></i>進階</span>
+</div>
+<div class="hint">← 可左右捲動　·　每個技能與細項技術都有獨立頁，內含 6 項學完自我檢核表 ✓</div>
 
-                            <a href="" class="column-9">
-                                <img loading="lazy"
-                                    srcset="https://cdn.builder.io/api/v1/image/assets/TEMP/7ce542bd-4e21-4a74-aaa4-43b3098e07ae?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/7ce542bd-4e21-4a74-aaa4-43b3098e07ae?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/7ce542bd-4e21-4a74-aaa4-43b3098e07ae?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/7ce542bd-4e21-4a74-aaa4-43b3098e07ae?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/7ce542bd-4e21-4a74-aaa4-43b3098e07ae?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/7ce542bd-4e21-4a74-aaa4-43b3098e07ae?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/7ce542bd-4e21-4a74-aaa4-43b3098e07ae?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/7ce542bd-4e21-4a74-aaa4-43b3098e07ae?apiKey=da8a2d32d9664dd3b0a4611f836c4adf&"
-                                    class="img-5" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="div-56">
-                    <div class="div-57">
-                        <div class="div-58">聯絡我</div>
-                        <div class="div-59">聯繫方式</div>
-                        <div class="div-60">電子郵箱： XXX@gmail.com</div>
-                        <div class="div-61">電話號碼：(123)456-7890</div>
-                        <div class="div-62">公司地址：XXX地址</div>
-                        <div class="div-63 btn">寄信給我</div>
-                    </div>
-                    <div class="div-64">
-                        <div class="div-65">社交媒體連結</div>
-                        <div class="div-66">臉書</div>
-                        <div class="div-67">Twitter</div>
-                        <div class="div-68">Instagram</div>
-                    </div>
-                </div>
-                <div class="div-69">
-                    <div class="div-70">客戶評價</div>
-                    <div class="div-71">
-                        「你真的很專業！我喜歡你為我創建的網站，尤其是動畫部分。」- X先生
-                    </div>
-                    <div class="div-72">
-                        「感謝您在整個設計過程中的誠實回答、有信仰和有創意。您的結果是卓越的，我們希望繼續與您合作。」-
-                        XXX公司
-                    </div>
-                    <div class="div-73">
-                        「太棒了，感謝您把我們的品牌提升到一個新的水平。您真的是一位優秀的設計師。」-
-                        X女士
-                    </div>
-                    <div class="div-74 btn">了解更多</div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="treewrap">
+  <div class="tree" id="tree"></div>
+</div>
 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/_6TtTRrno3E?si=dMK8D3B4MHQflZOt"
-        title="YouTube video player" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen></iframe>
-    <button onclick="goToTop()">Go Top</button>
-</body>
-
-</html>
-
+<script src="skills-data.js"></script>
 <script>
-    // JS邏輯
-    function goToTop() {
-        // 滾動到頁面頂部的動畫效果，使用 `window.scrollTo()` 方法
-        // 可以調整 `behavior` 參數來控制動畫效果，例如 "smooth" 會有平滑滾動效果
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
+  const DOMAIN_CLS = {"col-fe":"fe", "col-be":"be", "col-ai":"ai"};
+
+  // 細項技術小標籤（各自有獨立文件頁 + 檢核表）
+  function variantsHtml(skill){
+    if (!skill.children || !skill.children.length) return "";
+    const chips = skill.children.map(c => `
+      <a class="chip" href="detail.html?id=${c.id}" title="${c.name}（檢核表）">
+        ${window.SKILL_ICON(c, 18)}<span>${c.name}</span>
+      </a>`).join("");
+    return `<div class="variants">${chips}</div>`;
+  }
+
+  // 一個技能節點：卡片 + 其延伸技能（遞迴往下）
+  function renderTech(skill, dcls, childrenMap){
+    const dependents = (childrenMap[skill.id] || []);
+    const sub = dependents.length
+      ? `<ul>${dependents.map(d => renderTech(d, dcls, childrenMap)).join("")}</ul>`
+      : "";
+    return `
+      <li>
+        <div class="card lv-${skill.level}">
+          <span class="lvdot"></span>
+          <a class="card-head" href="detail.html?id=${skill.id}">
+            ${window.SKILL_ICON(skill, 28)}
+            <span class="nm">${skill.name}</span><span class="arrow">›</span>
+          </a>
+          ${variantsHtml(skill)}
+        </div>
+        ${sub}
+      </li>`;
+  }
+
+  // 一個領域：找出根技能（parent=null），各自往下展開延伸鏈
+  function renderDomain(col){
+    const dcls = DOMAIN_CLS[col.cls];
+    // 建立 parent -> [children skills] 對照
+    const byId = {};
+    col.skills.forEach(s => byId[s.id] = s);
+    const childrenMap = {};
+    col.skills.forEach(s => {
+      const p = window.SKILL_PARENT[s.id] || null;
+      if (p && byId[p]) (childrenMap[p] = childrenMap[p] || []).push(s);
+    });
+    const roots = col.skills.filter(s => !window.SKILL_PARENT[s.id]);
+    const rootsHtml = roots.map(s => renderTech(s, dcls, childrenMap)).join("");
+    return `
+      <li class="${dcls}">
+        <span class="pill domain ${dcls}">${col.title}</span>
+        <ul>${rootsHtml}</ul>
+      </li>`;
+  }
+
+  const domains = Object.values(window.SKILL_DATA).map(renderDomain).join("");
+  document.getElementById("tree").innerHTML = `
+    <ul>
+      <li>
+        <span class="pill root">🌳 全端工程師</span>
+        <ul>${domains}</ul>
+      </li>
+    </ul>`;
 </script>
+</body>
+</html>
