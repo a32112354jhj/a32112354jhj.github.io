@@ -19,6 +19,9 @@
   header{text-align:center;margin-bottom:8px;padding:0 20px;}
   header h1{font-size:30px;letter-spacing:1px;}
   header p{color:var(--text-dim);margin-top:8px;font-size:14px;}
+  .nav-links{display:flex;gap:10px;justify-content:center;margin-top:16px;}
+  .nav-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--card);color:var(--text);transition:.16s;}
+  .nav-btn:hover{border-color:var(--fe);color:var(--fe);box-shadow:0 0 16px rgba(88,166,255,.15);transform:translateY(-1px);}
 
   .legend{display:flex;gap:18px;justify-content:center;margin:22px 0 10px;flex-wrap:wrap;font-size:13px;color:var(--text-dim);}
   .legend span{display:inline-flex;align-items:center;gap:6px;}
@@ -65,12 +68,33 @@
 
   .ic{border-radius:6px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:#0d1117;border:1px solid var(--line);overflow:hidden;}
   .ic-emoji{border-style:dashed;color:var(--text-dim);}
+
+  /* ===== RWD ===== */
+  @media(max-width:600px){
+    body{padding:20px 0 60px;}
+    header h1{font-size:22px;}
+    header p{font-size:12px;}
+    .nav-btn{padding:6px 12px;font-size:12px;}
+    .legend{gap:10px;font-size:12px;}
+    .hint{font-size:11px;margin-bottom:12px;}
+    .treewrap{padding:16px 12px 40px;}
+    .tree li{padding:20px 6px 0;}
+    .pill{padding:8px 12px;font-size:13px;}
+    .root{font-size:15px;padding:10px 16px;}
+    .domain{font-size:13px;}
+    .card{min-width:100px;max-width:148px;padding:8px 10px;}
+    .card .card-head .nm{font-size:12px;}
+    .chip{font-size:10px;padding:2px 6px;}
+  }
 </style>
 </head>
 <body>
 <header>
   <h1>🌳 全端工程師技能樹</h1>
   <p>基礎技能在上，往下延伸進階技能（如 CSS → CSS 工具、JS → TS → 框架）</p>
+  <div class="nav-links">
+    <a class="nav-btn" href="algorithm/index.html">🧮 演算法視覺化 →</a>
+  </div>
 </header>
 
 <div class="legend">
